@@ -28,7 +28,7 @@ const questions = [{
     type: "list",
     name: "license",
     message: "What kind of license should your project have?",
-    choices: ["MIT", "APACHE 2.0", "GPL 3.0", "BSD 3", "None"]
+    choices: ["MIT", "APACHE 2.0", "GPL 3.0", "BSD 3"]
   },
   {
     type: "input",
@@ -51,21 +51,19 @@ const questions = [{
     message: "What does the user need to know about contributing to the repo?"
   }];
 
-  function userInput(){
+ const promptUser = () => {
     return inquirer.prompt(questions)
-  }
+ };
+
 // TODO: Create a function to write README file
-const fileName = "goodREADME.md";
-function writeToFile(fileName, data) {
-    fs.appendFile(`${fileName}.md`, data, 
-    (err) => err ? console.error(err) : console.log(`Your README has been generated.`))
-}
 
 // TODO: Create a function to initialize app
-function init() {
-    let answers = userInput ();
-    writeToFile((answers.fileName), (generateMarkdown(answers)))
-}
+const init = () => {
+  promptUser()
+  .then((answers) =>fs.writeFileSync('goodREADME.md', generateMarkdown(answers)))
+  .then(() => console.log('Your README has been created!'))
+  .catch((err) => console.log(err));
+};
 
 // Function call to initialize app
 init();
